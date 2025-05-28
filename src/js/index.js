@@ -11,7 +11,7 @@ const pets = [
   { id: 9, name: "Toby", image: "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGRvZ3xlbnwwfHwwfHx8MA%3D%3D", info: "Toby es un perro leal de 6 años, perfecto como compañero." }
 ];
 
-// Elementos del DOMK
+// Elementos del DOM
 const petsGrid = document.getElementById('petsGrid');
 const petModal = document.getElementById('petModal');
 const modalPetImage = document.getElementById('modalPetImage');
@@ -71,9 +71,9 @@ menuToggle.addEventListener('click', () => {
 //   alert('Redirigiendo al formulario de registro de usuario');
 // });
 
-document.getElementById('register-vet').addEventListener('click', () => {
-  alert('Redirigiendo al formulario de registro de veterinaria');
-});
+// document.getElementById('register-vet').addEventListener('click', () => {
+//   alert('Redirigiendo al formulario de registro de veterinaria');
+// });
 
 // document.getElementById('login').addEventListener('click', () => {
 //   alert('Redirigiendo al formulario de inicio de sesión');
