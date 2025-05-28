@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huellitas del Alma</title>
+    <link rel="stylesheet" href="../src/css/index.css"></link>
+</head>
+
+<body>
+    <!-- Menú lateral -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Huellitas del Alma</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a id="register-user" href="../public/register.html">Registro de Usuario</a></li>
+            <li><a id="register-vet">Registro de Veterinaria</a></li>
+            <li><a id="login" href="../public/login.html">Inicio de Sesión</a></li>
+            <li><a id="admin" href="../public/admin.html">AdminMode</a></li>
+            <li><a id="about">About Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Botón para mostrar/ocultar menú en móviles -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <h1 class="page-title">Mascotas en Adopción</h1>
+
+        <!-- Cuadrícula de mascotas 3xN -->
+        <div class="pets-grid" id="petsGrid">
+            <!-- Las tarjetas de mascotas se generarán dinámicamente con JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal de información de mascota -->
+    <div class="modal" id="petModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <img id="modalPetImage" src="" alt="Mascota">
+            <h2 id="modalPetName"></h2>
+            <p id="modalPetInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget
+                ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+            <button class="adopt-btn" id="adoptBtn">¡Adóptame!</button>
+        </div>
+    </div>
+
+    <script src="../src/js/index.js"></script>
+</body>
+
+</html>

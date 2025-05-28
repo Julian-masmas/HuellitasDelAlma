@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador - Huelitas del Alma</title>
+    <link rel="stylesheet" href="../src/css/admin.css"></link>
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Huellitas de Alma</h2>
+            <p>Panel de Administrador</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li><button id="dashboard">Dashboard</button></li>
+            <li><button id="add-pet">Agregar Mascota</button></li>
+            <!-- <li><button id="manage-pets">Gestionar Mascotas</button></li> -->
+            <li><a id="manage-users" href="gestionUsuarios.html" >Gestionar Usuarios</a></li>
+            <li><button id="logout">Cerrar Sesión</button></li>
+        </ul>
+    </div>
+
+    <!-- Botón para mostrar/ocultar menú en móviles -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <h1 class="page-title">Mascotas en Adopción</h1>
+        
+        <!-- Cuadrícula de mascotas 3xN -->
+        <div class="pets-grid" id="petsGrid">
+            <!-- Las tarjetas de mascotas se generarán dinámicamente con JavaScript -->
+        </div>
+        
+        <!-- Sección para agregar nueva mascota -->
+        <div class="add-pet-section" id="addPetSection">
+            <div class="add-pet-form">
+                <h2>Agregar Nueva Mascota</h2>
+                <form id="newPetForm">
+                    <div class="form-group">
+                        <label for="petName">Nombre:</label>
+                        <input type="text" id="petName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petImage">URL de la Imagen:</label>
+                        <input type="url" id="petImage" required placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="petType">Tipo:</label>
+                        <select id="petType" required>
+                            <option value="">Seleccione...</option>
+                            <option value="perro">Perro</option>
+                            <option value="gato">Gato</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="petAge">Edad (años):</label>
+                        <input type="number" id="petAge" min="0" max="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petInfo">Información:</label>
+                        <textarea id="petInfo" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="action-btn">Guardar Mascota</button>
+                        <button type="button" class="action-btn" id="cancelAddPet" style="background-color: #ff4d4d;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de información de mascota -->
+    <div class="modal" id="petModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <img id="modalPetImage" src="" alt="Mascota">
+            <h2 id="modalPetName"></h2>
+            <p id="modalPetInfo"></p>
+            <div>
+                <button class="action-btn" id="editPet">Editar</button>
+                <button class="action-btn" id="deletePet" style="background-color: #ff4d4d;">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/js/admin.js"></script>
+</body>
+</html>

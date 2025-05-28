@@ -1,0 +1,127 @@
+/* Estilos específicos para la página de login */
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #e3f2fd;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+
+}
+img {
+    width: 150px;
+    height: auto;
+    margin: 20px 0;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+form {
+    background-color: rgb(90, 157, 205);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.formulario {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.boton {
+    text-align: center;
+    margin-top: 25px;
+}
+
+input[type="submit"] {
+    background-color: #219653;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para mensajes de error (puedes agregar después con JavaScript) */
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos responsivos */
+@media (max-width: 480px) {
+    form {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+
+    
+}
+.formulario:nth-child(1) { animation-delay: 0.2s; }
+.formulario:nth-child(2) { animation-delay: 0.4s; }
+.boton { 
+    animation: fadeIn 0.5s ease 0.6s forwards;
+    opacity: 0;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Usuarios - AdoptaPet</title>
+    <link rel="stylesheet" href="../src/css/gestionUsuarios.css">
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>AdoptaPet</h2>
+            <p>Panel de Administrador</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li><button id="dashboard">Dashboard</button></li>
+            <li><button id="add-pet">Agregar Mascota</button></li>
+            <li><button id="manage-pets">Gestionar Mascotas</button></li>
+            <li><button id="manage-users" class="active">Control de Usuarios</button></li>
+            <li><button id="logout">Cerrar Sesión</button></li>
+        </ul>
+    </div>
+
+    <!-- Botón para mostrar/ocultar menú en móviles -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <h1 class="page-title">Control de Usuarios</h1>
+        
+        <!-- Tabla de usuarios -->
+        <table class="users-table" id="usersTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Solicitudes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filas de usuarios se generarán dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de solicitudes de adopción -->
+    <div class="modal" id="requestsModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2 id="modalUserName">Solicitudes de Adopción</h2>
+            <div id="requestsContainer">
+                <!-- Contenido de solicitudes se generará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/js/gestionUsuarios.js"></script>
+</body>
+</html>
