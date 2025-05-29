@@ -1,6 +1,3 @@
-// import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-// import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyAQgYiQo-qzBkr7jFBUUORr01ImBX-SIk8",
   authDomain: "huellitasdelalma-60cfb.firebaseapp.com",
@@ -14,6 +11,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+const auth = firebase.auth();  // ✅ Asegúrate de inicializar auth
 
 document.addEventListener('DOMContentLoaded', () => {
   const userNameInput = document.getElementById('username');
@@ -26,48 +24,31 @@ document.addEventListener('DOMContentLoaded', () => {
   register_btn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    const usuariosRef = firebase.database().ref('Usuarios');
-    const nuevaRef = usuariosRef.push();  // 🔑 Crea ID único
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const nombre = userNameInput.value.trim();
+    const celular = cellPhoneInput.value.trim();
+    const direccion = directionInput.value.trim();
 
-    nuevaRef.set({
-      nombre_usuario: userNameInput.value,
-      email: emailInput.value,
-      password: passwordInput.value,
-      celular: cellPhoneInput.value,
-      direccion: directionInput.value
-    }).then(() => {
-      alert("Usuario registrado con ID: " + nuevaRef.key);
-    }).catch((error) => {
-      console.error("Error al registrar usuario:", error);
-    });
+    // ✅ Primero registrar en Firebase Authentication
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        // ✅ Luego guardar datos adicionales en Realtime Database
+        return db.ref("Usuarios/" + user.uid).set({
+          nombre_usuario: nombre,
+          email: email,
+          celular: celular,
+          direccion: direccion
+        });
+      })
+      .then(() => {
+        alert("Usuario registrado correctamente.");
+      })
+      .catch((error) => {
+        console.error("Error al registrar usuario:", error);
+        alert("Error: " + error.message);
+      });
   });
 });
-// document.addEventListener('DOMContentLoaded', () => {
-//   const userNameInput = document.getElementById('username');
-//   const emailInput = document.getElementById('email');
-//   const passwordInput = document.getElementById('password');
-//   const cellPhoneInput = document.getElementById('cellphone');
-//   const directionInput = document.getElementById('direccion');
-//   const register_btn = document.getElementById('register_btn');
-
-//   function registrarUsuario(e) {
-//     e.preventDefault();
-
-//     const usuariosRef = ref(db, 'Usuarios');
-//     const nuevaRef = push(usuariosRef);  // 🔑 Crea ID único
-
-//     set(nuevaRef, {
-//       nombre_usuario: userNameInput.value,
-//       email: emailInput.value,
-//       password: passwordInput.value,
-//       celular: cellPhoneInput.value,
-//       direccion: directionInput.value
-//     }).then(() => {
-//       alert("Usuario registrado con ID: " + nuevaRef.key);
-//     }).catch((error) => {
-//       console.error("Error al registrar usuario:", error);
-//     });
-//   }
-
-//   register_btn.addEventListener('click', registrarUsuario);
-// });
