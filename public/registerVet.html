@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Register</title>
     <link rel="stylesheet" href="../src/css/register.css">
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-auth-compat.js"></script>
+    <script src="/src/js/registerVet.js"></script>
 </head>
 
 <body>
@@ -13,11 +18,13 @@
     <form id="registroForm">
         <div class="formulario">
             <label for="username">Nombre: </label>
-            <input type="text" name="username" id="username" placeholder="Escribe el nombre de tu organizacion" required>
+            <input type="text" name="username" id="username" placeholder="Escribe el nombre de tu organizacion"
+                required>
         </div>
         <div class="formulario">
-            <label for="matricula_mercantil">Matricula mercantil: </label>
-            <input type="number" name="matricula_mercantil" id="matricula_mercantil" placeholder="Numero de matricula mercantil" required>
+            <label for="nit">Matricula mercantil (NIT): </label>
+            <input type="number" name="matricula_mercantil" id="nit"
+                placeholder="Numero de matricula mercantil" required>
         </div>
         <div class="formulario">
             <label for="email">Correo: </label>

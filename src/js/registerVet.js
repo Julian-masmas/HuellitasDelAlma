@@ -16,6 +16,7 @@ const auth = firebase.auth();
 document.addEventListener('DOMContentLoaded', () => {
   const userNameInput = document.getElementById('username');
   const emailInput = document.getElementById('email');
+  const nitInput = document.getElementById('nit');
   const passwordInput = document.getElementById('password');
   const cellPhoneInput = document.getElementById('cellphone');
   const directionInput = document.getElementById('direccion');
@@ -29,25 +30,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombre = userNameInput.value.trim();
     const celular = cellPhoneInput.value.trim();
     const direccion = directionInput.value.trim();
+    const nit = nitInput.value.trim();
 
     // ✅ Primero registrar en Firebase Authentication
     auth.createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then((vetCredential) => {
+        const vet = vetCredential.user;
 
         // ✅ Luego guardar datos adicionales en Realtime Database
-        return db.ref("Usuarios/" + user.uid).set({
-          nombre_usuario: nombre,
+        return db.ref("Veterinarias/" + vet.uid).set({
+          nombre_veterinaria: nombre,
           email: email,
           celular: celular,
-          direccion: direccion
+          direccion: direccion,
+          nit: nit
         });
       })
       .then(() => {
-        alert("Usuario registrado correctamente.");
+        alert("Veterinaria registrada correctamente.");
       })
       .catch((error) => {
-        console.error("Error al registrar usuario:", error);
+        console.error("Error al registrar veterinaria:", error);
         alert("Error: " + error.message);
       });
   });
