@@ -57,8 +57,8 @@ petModal.addEventListener('click', (e) => {
 
 // Botón de adopción
 adoptBtn.addEventListener('click', () => {
-  alert(`¡Gracias por querer adoptar a ${modalPetName.textContent}! Pronto nos pondremos en contacto contigo.`);
   petModal.style.display = 'none';
+  window.location.href = "../public/adoption.html";
 });
 
 // Mostrar/ocultar menú en móviles

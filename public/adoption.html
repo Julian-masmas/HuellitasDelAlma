@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adopción - Huellitas del Alma</title>
+    <link rel="stylesheet" href="../src/css/adoption.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Solicitud de Adopción</h1>
+        <p>Por favor ingresa tu correo de Gmail para enviarte la información sobre la adopción.</p>
+
+        <input type="email" id="email" placeholder="Correo electrónico de Gmail" required />
+        <button id="sendBtn">Enviar Solicitud</button>
+
+        <p id="statusMessage"></p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="/src/js/adoption.js"></script>
+</body>
+
+</html>
