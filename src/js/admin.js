@@ -1,18 +1,154 @@
-let pets = [
-    { id: 1, name: "Max", image: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZG9nfGVufDB8fDB8fHww", type: "perro", age: 2, info: "Max es un perro juguetón de 2 años que adora los paseos y jugar con pelotas." },
-    { id: 2, name: "Luna", image: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2F0fGVufDB8fDB8fHww", type: "gato", age: 3, info: "Luna es una gata tranquila de 3 años que disfruta de las siestas al sol." },
-    { id: 3, name: "Rocky", image: "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9nfGVufDB8fDB8fHww", type: "perro", age: 4, info: "Rocky es un perro protector de 4 años, ideal para familias con niños." },
-    { id: 4, name: "Milo", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0fGVufDB8fDB8fHww", type: "gato", age: 1, info: "Milo es un gato curioso de 1 año que siempre está explorando nuevos lugares." },
-    { id: 5, name: "Bella", image: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZG9nfGVufDB8fDB8fHww", type: "perro", age: 5, info: "Bella es una perrita cariñosa de 5 años que busca un hogar amoroso." },
-    { id: 6, name: "Simba", image: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0fGVufDB8fDB8fHww", type: "gato", age: 2, info: "Simba es un gato majestuoso de 2 años con un pelaje espectacular." },
-    { id: 7, name: "Coco", image: "https://images.unsplash.com/photo-1544568100-847a948585b9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGRvZ3xlbnwwfHwwfHx8MA%3D%3D", info: "Coco es un perro energético de 1 año que necesita mucho ejercicio." },
-    { id: 8, name: "Lola", image: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhdHxlbnwwfHwwfHx8MA%3D%3D", info: "Lola es una gata mimosa de 4 años que adora que la acaricien." },
-    { id: 9, name: "Toby", image: "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGRvZ3xlbnwwfHwwfHx8MA%3D%3D", info: "Toby es un perro leal de 6 años, perfecto como compañero." }
-];
+document.addEventListener('DOMContentLoaded', () => {
+  const newPetForm = document.getElementById('newPetForm');
+  const addPetSection = document.getElementById('addPetSection');
+  const petsGrid = document.getElementById('petsGrid');
+  const editPetBtn = document.getElementById('editPetBtn');
+  const petModal = document.getElementById('petModal');
+
+  if (!newPetForm || !addPetSection || !petsGrid) {
+    console.error("Faltan elementos clave en el HTML");
+    return;
+  }
+
+  const db = firebase.database();
+  const auth = firebase.auth();
+
+  let currentVetId = null;
+  let currentPetId = null;
+  let pets = [];
+
+  const getVetRef = () => db.ref(`Veterinarias/${currentVetId}`);
+  const getPetsRef = () => db.ref(`Veterinarias/${currentVetId}/mascotas`);
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      currentVetId = user.uid;
+      loadPets();
+    } else {
+      window.location.href = 'login.html';
+    }
+  });
+
+  function loadPets() {
+    getPetsRef().on('value', (snapshot) => {
+      pets = [];
+      const petsData = snapshot.val();
+      if (petsData) {
+        Object.keys(petsData).forEach(key => {
+          pets.push({ id: key, ...petsData[key] });
+        });
+      }
+      renderPets();
+    });
+  }
+
+  async function savePet(petData) {
+    try {
+      if (currentPetId) {
+        await getPetsRef().child(currentPetId).update(petData);
+        alert('Mascota actualizada correctamente');
+      } else {
+        const newPetRef = getPetsRef().push();
+        await newPetRef.set(petData);
+        alert('Mascota agregada correctamente');
+      }
+      return true;
+    } catch (error) {
+      console.error("Error al guardar mascota:", error);
+      alert('Error al guardar la mascota');
+      return false;
+    }
+  }
+
+  async function deletePet(petId) {
+    try {
+      await getPetsRef().child(petId).remove();
+      alert('Mascota eliminada correctamente');
+      return true;
+    } catch (error) {
+      console.error("Error al eliminar mascota:", error);
+      alert('Error al eliminar la mascota');
+      return false;
+    }
+  }
+
+  newPetForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const petData = {
+      name: document.getElementById('petName').value,
+      image: document.getElementById('petImage').value,
+      type: document.getElementById('petType').value,
+      age: parseInt(document.getElementById('petAge').value),
+      info: document.getElementById('petInfo').value,
+      fecha_creacion: new Date().toISOString()
+    };
+
+    const success = await savePet(petData);
+
+    if (success) {
+      addPetSection.classList.remove('show-add-pet');
+      petsGrid.style.display = 'grid';
+      document.querySelector('.page-title').textContent = 'Mascotas en Adopción';
+      newPetForm.reset();
+      currentPetId = null;
+    }
+  });
+
+  function setupDeleteButton(deleteBtn, pet) {
+    deleteBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      if (confirm(`¿Estás seguro de que quieres eliminar a ${pet.name}?`)) {
+        await deletePet(pet.id);
+      }
+    });
+  }
+
+  function renderPets() {
+    petsGrid.innerHTML = '';
+    if (pets.length === 0) {
+      petsGrid.innerHTML = '<p class="no-pets">No hay mascotas registradas</p>';
+      return;
+    }
+
+    pets.forEach(pet => {
+      const petCard = document.createElement('div');
+      petCard.className = 'pet-card';
+      petCard.innerHTML = `
+        <img src="${pet.image || 'https://via.placeholder.com/150'}" alt="${pet.name}">
+        <h3>${pet.name}</h3>
+        <button class="delete-pet" data-id="${pet.id}">×</button>
+      `;
+      petCard.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('delete-pet')) {
+          openModal(pet);
+        }
+      });
+      const deleteBtn = petCard.querySelector('.delete-pet');
+      setupDeleteButton(deleteBtn, pet);
+      petsGrid.appendChild(petCard);
+    });
+  }
+
+  editPetBtn?.addEventListener('click', () => {
+    const pet = pets.find(p => p.id === currentPetId);
+    if (pet) {
+      document.getElementById('petName').value = pet.name;
+      document.getElementById('petImage').value = pet.image || '';
+      document.getElementById('petType').value = pet.type || 'perro';
+      document.getElementById('petAge').value = pet.age || '';
+      document.getElementById('petInfo').value = pet.info || '';
+      addPetSection.classList.add('show-add-pet');
+      petsGrid.style.display = 'none';
+      document.querySelector('.page-title').textContent = 'Editar Mascota';
+      petModal.style.display = 'none';
+    }
+  });
+});
 
 // Elementos del DOM
-const petsGrid = document.getElementById('petsGrid');
-const petModal = document.getElementById('petModal');
+/*const petsGrid = document.getElementById('petsGrid');
+const petModal = document.getElementById('petModal'); 
 const modalPetImage = document.getElementById('modalPetImage');
 const modalPetName = document.getElementById('modalPetName');
 const modalPetInfo = document.getElementById('modalPetInfo');
@@ -26,7 +162,7 @@ const newPetForm = document.getElementById('newPetForm');
 const cancelAddPet = document.getElementById('cancelAddPet');
 const addPetBtn = document.getElementById('add-pet');
 const dashboardBtn = document.getElementById('dashboard');
-let currentPetId = null;
+// let currentPetId = null;
 
 // Generar las tarjetas de mascotas
 function renderPets() {
@@ -203,4 +339,4 @@ document.getElementById('logout').addEventListener('click', () => {
         alert('Sesión cerrada. Redirigiendo al inicio...');
         // Aquí iría la redirección a la página de inicio
     }
-});
+});*/

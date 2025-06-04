@@ -1,13 +1,31 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="es">
 <head>
-    <title>Register</title>
+    <meta charset="UTF-8">
+    <title>Registro de Veterinaria</title>
     <link rel="stylesheet" href="../src/css/register.css">
+    
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-auth-compat.js"></script>
-    <script src="/src/js/registerVet.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database-compat.js"></script>
+    
+    <!-- Configuración Firebase -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQgYiQo-qzBkr7jFBUUORr01ImBX-SIk8",
+            authDomain: "huellitasdelalma-60cfb.firebaseapp.com",
+            databaseURL: "https://huellitasdelalma-60cfb-default-rtdb.firebaseio.com",
+            projectId: "huellitasdelalma-60cfb",
+            storageBucket: "huellitasdelalma-60cfb.appspot.com",
+            messagingSenderId: "1010111418840",
+            appId: "1:1010111418840:web:33efac312ca4dd6de022ad",
+            measurementId: "G-NV6YYVFJS3"
+        };
+        
+        // Inicializa Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 
 <body>
@@ -18,13 +36,11 @@
     <form id="registroForm">
         <div class="formulario">
             <label for="username">Nombre: </label>
-            <input type="text" name="username" id="username" placeholder="Escribe el nombre de tu organizacion"
-                required>
+            <input type="text" name="username" id="username" placeholder="Escribe el nombre de tu organizacion" required>
         </div>
         <div class="formulario">
             <label for="nit">Matricula mercantil (NIT): </label>
-            <input type="number" name="matricula_mercantil" id="nit"
-                placeholder="Numero de matricula mercantil" required>
+            <input type="number" name="matricula_mercantil" id="nit" placeholder="Numero de matricula mercantil" required>
         </div>
         <div class="formulario">
             <label for="email">Correo: </label>
@@ -36,18 +52,18 @@
         </div>
         <div class="formulario">
             <label for="cellphone">Celular: </label>
-            <input type="number" name="cellphone" id="cellphone" placeholder="Celular" minlength="10" required>
+            <input type="text" name="cellphone" id="cellphone" placeholder="Celular" minlength="10" required>
         </div>
         <div class="formulario">
             <label for="direccion">Direccion: </label>
             <input type="text" name="direccion" id="direccion" placeholder="Escribe tu direccion" required>
         </div>
         <div class="boton">
-            <button id="register_btn">Registrarse</button>
-            <!-- <input type="submit" value="Registrarse" required> -->
+            <button type="button" id="register_btn">Registrarse</button>
         </div>
     </form>
-</body>
-<script type="module" src="index.js"></script>
 
+    <!-- Script de registro -->
+    <script src="../src/js/registerVet.js"></script>
+</body>
 </html>
