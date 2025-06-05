@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Huellitas del Alma</title>
-    <link rel="stylesheet" href="../src/css/index.css"></link>
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script> -->
+    <link rel="stylesheet" href="../src/css/index.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database-compat.js"></script>
+    
+    <!-- Configuración Firebase -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQgYiQo-qzBkr7jFBUUORr01ImBX-SIk8",
+            authDomain: "huellitasdelalma-60cfb.firebaseapp.com",
+            databaseURL: "https://huellitasdelalma-60cfb-default-rtdb.firebaseio.com",
+            projectId: "huellitasdelalma-60cfb",
+            storageBucket: "huellitasdelalma-60cfb.appspot.com",
+            messagingSenderId: "1010111418840",
+            appId: "1:1010111418840:web:33efac312ca4dd6de022ad",
+            measurementId: "G-NV6YYVFJS3"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 
 <body>
@@ -32,9 +48,23 @@
     <div class="main-content">
         <h1 class="page-title">Mascotas en Adopción</h1>
 
-        <!-- Cuadrícula de mascotas 3xN -->
-        <div class="pets-grid" id="petsGrid">
-            <!-- Las tarjetas de mascotas se generarán dinámicamente con JavaScript -->
+        <!-- Estado de carga -->
+        <div id="loadingIndicator" style="text-align: center; padding: 20px;">
+            <p>Cargando mascotas disponibles...</p>
+        </div>
+        
+        <!-- Mensaje cuando no hay mascotas -->
+        <div id="noPetsMessage" style="display: none; text-align: center; padding: 20px;">
+            <p>No hay mascotas disponibles en este momento. Por favor revisa más tarde.</p>
+        </div>
+
+    <!-- Cuadrícula de mascotas -->
+    <div class="pets-grid" id="petsGrid" style="display: none;">
+        <!-- Ejemplo de tarjeta de mascota -->
+        <div class="tarjeta">
+            <img src="ruta-de-la-imagen.jpg" alt="Mascota">
+            <h2>Nombre de la mascota</h2>
+            <!-- Ya no se incluye tipo, edad ni otra información aquí -->
         </div>
     </div>
 
@@ -42,15 +72,18 @@
     <div class="modal" id="petModal">
         <div class="modal-content">
             <span class="close-btn" id="closeModal">&times;</span>
-            <img id="modalPetImage" src="" alt="Mascota">
+            <img id="modalPetImage" src="" alt="Mascota" onerror="this.src='https://via.placeholder.com/150'">
             <h2 id="modalPetName"></h2>
-            <p id="modalPetInfo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget
-                ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+            <div class="pet-details">
+                <p><strong>Tipo:</strong> <span id="modalPetType"></span></p>
+                <p><strong>Edad:</strong> <span id="modalPetAge"></span> años</p>
+                <p><strong>Veterinaria:</strong> <span id="modalPetVet"></span></p>
+            </div>
+            <p id="modalPetInfo"></p>
             <button class="adopt-btn" id="adoptBtn">¡Adóptame!</button>
         </div>
     </div>
 
     <script src="../src/js/index.js"></script>
 </body>
-
 </html>

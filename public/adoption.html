@@ -1,15 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adopción - Huellitas del Alma</title>
-    <link rel="stylesheet" href="../src/css/adoption.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Adopción - Huellitas del Alma</title>
+    <link rel="stylesheet" href="../src/css/adoption.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database-compat.js"></script>
+    
+    <!-- Configuración Firebase -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQgYiQo-qzBkr7jFBUUORr01ImBX-SIk8",
+            authDomain: "huellitasdelalma-60cfb.firebaseapp.com",
+            databaseURL: "https://huellitasdelalma-60cfb-default-rtdb.firebaseio.com",
+            projectId: "huellitasdelalma-60cfb",
+            storageBucket: "huellitasdelalma-60cfb.appspot.com",
+            messagingSenderId: "1010111418840",
+            appId: "1:1010111418840:web:33efac312ca4dd6de022ad",
+            measurementId: "G-NV6YYVFJS3"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
-
 <body>
     <div class="container">
+        <div id="petInfoContainer" style="display: none;">
+            <img id="petImagePreview" src="" alt="Mascota" style="max-width: 200px; border-radius: 8px;">
+            <h2 id="petNamePreview"></h2>
+            <p id="petDetails"></p>
+        </div>
+        
         <h1>Solicitud de Adopción</h1>
         <p>Por favor ingresa tu correo de Gmail para enviarte la información sobre la adopción.</p>
 
@@ -18,8 +41,8 @@
 
         <p id="statusMessage"></p>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script src="/src/js/adoption.js"></script>
-</body>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="../src/js/adoption.js"></script>
+</body>
 </html>

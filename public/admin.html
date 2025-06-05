@@ -1,3 +1,4 @@
+script html:
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -36,7 +37,7 @@
         <ul class="sidebar-menu">
             <li><button id="dashboard">Dashboard</button></li>
             <li><button id="add-pet">Agregar Mascota</button></li>
-            <!-- <li><a id="manage-users" href="gestionUsuarios.html">Gestionar Usuarios</a></li> -->
+            <li><button id="manage-requests">Gestionar solicitudes</button></li>
             <li><button id="logout">Cerrar Sesión</button></li>
         </ul>
     </div>
@@ -99,8 +100,25 @@
                     </div>
                 </form>
             </div>
+        </div> <!-- Cierre del add-pet-section -->
+
+        <!-- Sección para gestionar solicitudes -->
+        <div class="requests-section" id="requestsSection" style="display: none;">
+            <h2>Solicitudes de Adopción</h2>
+            
+            <div id="requestsLoading" style="text-align: center; padding: 20px;">
+                <p>Cargando solicitudes...</p>
+            </div>
+            
+            <div id="noRequestsMessage" style="display: none; text-align: center; padding: 20px;">
+                <p>No hay solicitudes pendientes.</p>
+            </div>
+            
+            <div class="requests-list" id="requestsList">
+                <!-- Las solicitudes se cargarán aquí dinámicamente -->
+            </div>
         </div>
-    </div>
+    </div> <!-- Cierre del main-content -->
 
     <!-- Modal de información de mascota -->
     <div class="modal" id="petModal">

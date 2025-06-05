@@ -1,84 +1,137 @@
-// Datos de ejemplo de mascotas
-const pets = [
-  { id: 1, name: "Max", image: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZG9nfGVufDB8fDB8fHww", info: "Max es un perro juguetón de 2 años que adora los paseos y jugar con pelotas." },
-  { id: 2, name: "Luna", image: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2F0fGVufDB8fDB8fHww", info: "Luna es una gata tranquila de 3 años que disfruta de las siestas al sol." },
-  { id: 3, name: "Rocky", image: "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9nfGVufDB8fDB8fHww", info: "Rocky es un perro protector de 4 años, ideal para familias con niños." },
-  { id: 4, name: "Milo", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0fGVufDB8fDB8fHww", info: "Milo es un gato curioso de 1 año que siempre está explorando nuevos lugares." },
-  { id: 5, name: "Bella", image: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZG9nfGVufDB8fDB8fHww", info: "Bella es una perrita cariñosa de 5 años que busca un hogar amoroso." },
-  { id: 6, name: "Simba", image: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2F0fGVufDB8fDB8fHww", info: "Simba es un gato majestuoso de 2 años con un pelaje espectacular." },
-  { id: 7, name: "Coco", image: "https://images.unsplash.com/photo-1544568100-847a948585b9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGRvZ3xlbnwwfHwwfHx8MA%3D%3D", info: "Coco es un perro energético de 1 año que necesita mucho ejercicio." },
-  { id: 8, name: "Lola", image: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhdHxlbnwwfHwwfHx8MA%3D%3D", info: "Lola es una gata mimosa de 4 años que adora que la acaricien." },
-  { id: 9, name: "Toby", image: "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGRvZ3xlbnwwfHwwfHx8MA%3D%3D", info: "Toby es un perro leal de 6 años, perfecto como compañero." }
-];
+// Inicializa Firebase
+const db = firebase.database();
 
 // Elementos del DOM
 const petsGrid = document.getElementById('petsGrid');
 const petModal = document.getElementById('petModal');
 const modalPetImage = document.getElementById('modalPetImage');
 const modalPetName = document.getElementById('modalPetName');
+const modalPetType = document.getElementById('modalPetType');
+const modalPetAge = document.getElementById('modalPetAge');
+const modalPetVet = document.getElementById('modalPetVet');
 const modalPetInfo = document.getElementById('modalPetInfo');
 const closeModal = document.getElementById('closeModal');
 const adoptBtn = document.getElementById('adoptBtn');
 const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const noPetsMessage = document.getElementById('noPetsMessage');
+
+// Variable para almacenar la mascota actual en el modal
+let currentPet = null;
+
+// Cargar todas las mascotas de todas las veterinarias
+function loadAllPets() {
+    loadingIndicator.style.display = 'block';
+    petsGrid.style.display = 'none';
+    noPetsMessage.style.display = 'none';
+    
+    db.ref('Veterinarias').once('value').then(snapshot => {
+        const vets = snapshot.val();
+        const allPets = [];
+        
+        if (vets) {
+            Object.keys(vets).forEach(vetId => {
+                const vet = vets[vetId];
+                const vetName = vet.nombre_veterinaria || 'Veterinaria sin nombre';
+                
+                if (vet.mascotas) {
+                    Object.keys(vet.mascotas).forEach(petId => {
+                        const pet = vet.mascotas[petId];
+                        allPets.push({
+                            id: petId,
+                            vetId: vetId,
+                            vetName: vetName,
+                            ...pet
+                        });
+                    });
+                }
+            });
+        }
+        
+        renderPets(allPets);
+        
+        if (allPets.length === 0) {
+            noPetsMessage.style.display = 'block';
+        } else {
+            petsGrid.style.display = 'grid';
+        }
+        
+        loadingIndicator.style.display = 'none';
+    }).catch(error => {
+        console.error("Error al cargar mascotas:", error);
+        loadingIndicator.style.display = 'none';
+        noPetsMessage.style.display = 'block';
+        noPetsMessage.innerHTML = '<p>Error al cargar las mascotas. Por favor intenta nuevamente.</p>';
+    });
+}
 
 // Generar las tarjetas de mascotas
-pets.forEach(pet => {
-  const petCard = document.createElement('div');
-  petCard.className = 'pet-card';
-  petCard.innerHTML = `
-                <img src="${pet.image}" alt="${pet.name}">
-                <h3>${pet.name}</h3>
-            `;
-  petCard.addEventListener('click', () => openModal(pet));
-  petsGrid.appendChild(petCard);
-});
+function renderPets(pets) {
+    petsGrid.innerHTML = '';
+    
+    pets.forEach(pet => {
+        const petCard = document.createElement('div');
+        petCard.className = 'pet-card';
+        petCard.innerHTML = `
+            <img src="${pet.image || 'https://via.placeholder.com/150'}" alt="${pet.name}" 
+                 onerror="this.src='https://via.placeholder.com/150'">
+            <h3>${pet.name}</h3>
+            <p class="pet-type">${pet.type || 'Sin tipo especificado'}</p>
+        `;
+        
+        petCard.addEventListener('click', () => openModal(pet));
+        petsGrid.appendChild(petCard);
+    });
+}
 
 // Abrir modal con información de la mascota
 function openModal(pet) {
-  modalPetImage.src = pet.image;
-  modalPetImage.alt = pet.name;
-  modalPetName.textContent = pet.name;
-  modalPetInfo.textContent = pet.info;
-  petModal.style.display = 'flex';
+    currentPet = pet;
+    
+    modalPetImage.src = pet.image || 'https://via.placeholder.com/150';
+    modalPetImage.alt = pet.name;
+    modalPetName.textContent = pet.name;
+    modalPetType.textContent = pet.type || 'No especificado';
+    modalPetAge.textContent = pet.age || '?';
+    modalPetVet.textContent = pet.vetName;
+    modalPetInfo.textContent = pet.info || 'No hay información adicional disponible.';
+    
+    petModal.style.display = 'flex';
 }
 
 // Cerrar modal
 closeModal.addEventListener('click', () => {
-  petModal.style.display = 'none';
+    petModal.style.display = 'none';
+    currentPet = null;
 });
 
 // Cerrar modal al hacer clic fuera del contenido
 petModal.addEventListener('click', (e) => {
-  if (e.target === petModal) {
-    petModal.style.display = 'none';
-  }
+    if (e.target === petModal) {
+        petModal.style.display = 'none';
+        currentPet = null;
+    }
 });
 
 // Botón de adopción
 adoptBtn.addEventListener('click', () => {
-  petModal.style.display = 'none';
-  window.location.href = "../public/adoption.html";
+    if (currentPet) {
+        // Guardar la mascota seleccionada para el proceso de adopción
+        localStorage.setItem('selectedPet', JSON.stringify(currentPet));
+        window.location.href = "../public/adoption.html";
+    }
 });
 
 // Mostrar/ocultar menú en móviles
 menuToggle.addEventListener('click', () => {
-  sidebar.classList.toggle('active');
+    sidebar.classList.toggle('active');
 });
 
-// Funcionalidad de los botones del menú
-// document.getElementById('register-user').addEventListener('click', () => {
-//   alert('Redirigiendo al formulario de registro de usuario');
-// });
-
-// document.getElementById('register-vet').addEventListener('click', () => {
-//   alert('Redirigiendo al formulario de registro de veterinaria');
-// });
-
-// document.getElementById('login').addEventListener('click', () => {
-//   alert('Redirigiendo al formulario de inicio de sesión');
-// });
-
+// About Us
 document.getElementById('about').addEventListener('click', () => {
-  alert('AdoptaPet es una plataforma dedicada a encontrar hogares amorosos para mascotas necesitadas.');
+    alert('Huellitas del Alma es una plataforma dedicada a encontrar hogares amorosos para mascotas necesitadas.');
 });
+
+// Cargar las mascotas al iniciar la página
+document.addEventListener('DOMContentLoaded', loadAllPets);
